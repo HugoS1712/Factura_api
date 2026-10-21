@@ -5,8 +5,8 @@ const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '1712hugo@gmail.com',
-        pass: 'jexk hbzv jpag cvkn'
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
     }
 });
 
@@ -72,10 +72,10 @@ exports.addUsuario = (req, res) => {
             try {
 
                 const enlace =
-                    `http://localhost:4200/activar/${token}`;
+                    `${process.env.FRONTEND_URL}/activar/${token}`;
 
                 await transporter.sendMail({
-                    from: '1712hugo@gmail.com',
+                    from: process.env.MAIL_USER,
                     to: email,
                     subject: 'Activación de cuenta',
                     html: `
@@ -88,7 +88,7 @@ exports.addUsuario = (req, res) => {
                         </p>
 
                         <p>
-                            ${enlace}
+                            <a href="${enlace}">
                                 Crear contraseña
                             </a>
                         </p>
@@ -274,7 +274,7 @@ exports.validarGoogle = (req, res) => {
 
             }
 
-            res.json({
+        n({
                 autorizado: true,
                 usuario: results[0]
             });
